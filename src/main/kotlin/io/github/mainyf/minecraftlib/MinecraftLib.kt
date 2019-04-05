@@ -25,7 +25,7 @@ class MinecraftLib : JavaPlugin(), IMinecraftLib {
         return commandMap!!
     }
 
-    override fun getThrottle(wait: Long): Throttle {
+    override fun getThrottle(wait: Double): Throttle {
         return Throttle(wait)
     }
 

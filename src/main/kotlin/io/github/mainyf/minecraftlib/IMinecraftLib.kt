@@ -12,6 +12,6 @@ interface IMinecraftLib {
     /**
      * get throttle tool class
      */
-    fun getThrottle(wait: Long): Throttle
+    fun getThrottle(wait: Double): Throttle
 
 }
