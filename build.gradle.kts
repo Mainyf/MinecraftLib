@@ -35,7 +35,7 @@ dependencies {
     archives(kotlin("stdlib-jdk8"))
     archives("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.6")
     archives("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.6")
-    archives("org.kodein.di:kodein-di-generic-jvm:6.1.0")
+//    archives("org.kodein.di:kodein-di-generic-jvm:6.1.0")
     testCompile("junit", "junit", "4.12")
     configurations.compile.get().extendsFrom(configurations.archives.get())
 }
