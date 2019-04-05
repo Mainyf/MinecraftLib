@@ -1,6 +1,5 @@
 package io.github.mainyf.minecraftlib
 
-import io.github.mainyf.minecraftlib.utils.IDebounce
 import org.bukkit.command.CommandMap
 import org.bukkit.plugin.ServicePriority
 import org.bukkit.plugin.java.JavaPlugin
@@ -26,8 +25,8 @@ class MinecraftLib : JavaPlugin(), IMinecraftLib {
         return commandMap!!
     }
 
-    override fun getDebounce(wait: Long): IDebounce {
-        return Debounce(wait)
+    override fun getThrottle(wait: Long): Throttle {
+        return Throttle(wait)
     }
 
 }

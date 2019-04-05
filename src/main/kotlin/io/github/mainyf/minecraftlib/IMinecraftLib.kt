@@ -1,6 +1,5 @@
 package io.github.mainyf.minecraftlib
 
-import io.github.mainyf.minecraftlib.utils.IDebounce
 import org.bukkit.command.CommandMap
 
 interface IMinecraftLib {
@@ -11,8 +10,8 @@ interface IMinecraftLib {
     fun getCommandMap(): CommandMap
 
     /**
-     * get debounce tool class
+     * get throttle tool class
      */
-    fun getDebounce(wait: Long): IDebounce
+    fun getThrottle(wait: Long): Throttle
 
 }
