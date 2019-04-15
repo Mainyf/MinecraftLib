@@ -94,7 +94,7 @@ private fun parentOperate(type: Class<*>, operater: (clazz: Class<*>) -> Unit) {
     }
 }
 
-fun Class<*>.getAllClass(): List<Class<*>> {
+fun Class<*>.getAllClass(include: List<String> = listOf()): List<Class<*>> {
     val jarFile = File(this.protectionDomain.codeSource.location.toURI())
     return mutableListOf<Class<*>>().apply {
         val jar = JarFile(jarFile)
@@ -102,7 +102,9 @@ fun Class<*>.getAllClass(): List<Class<*>> {
             val className = it.name
                 .replace("/", ".")
                 .replace(".class", "")
-            add(Class.forName(className))
+            if(include.isEmpty() || include.containsWith { ig -> className.contains(ig) }) {
+                add(Class.forName(className))
+            }
         }
     }
 }

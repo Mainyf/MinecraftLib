@@ -2,20 +2,32 @@
 
 package io.github.mainyf.minecraftlib.extensions
 
+import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 
 fun ItemStack.setDisplayName(displayName: String): ItemStack? {
     return this.also {
-        it.itemMeta = it.itemMeta.also {item ->
+        it.itemMeta = it.itemMeta.also { item ->
             item.displayName = displayName
         }
     }
 }
 
+fun ItemStack.getLore(): MutableList<String> {
+    if (type == Material.AIR) {
+        return mutableListOf()
+    }
+    val itemMeta = itemMeta
+    if (itemMeta == null || !itemMeta.hasLore()) {
+        return mutableListOf()
+    }
+    return itemMeta.lore ?: mutableListOf()
+}
+
 fun ItemStack.setLore(lore: List<String>): ItemStack? {
     return this.also {
-        it.itemMeta = it.itemMeta.also {item ->
+        it.itemMeta = it.itemMeta.also { item ->
             item.lore = lore
         }
     }
