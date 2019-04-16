@@ -26,9 +26,9 @@ class IntValueRange(min: Int, max: Int) : AbstractValueRange<Int>(min, max) {
 
     init {
         if (this.min > this.max) {
-            this.max += min
-            this.min = this.max - this.min
-            this.max = this.max - this.min
+            this.max ^= this.min
+            this.min ^= this.max
+            this.max ^= this.min
         }
     }
 
@@ -59,9 +59,9 @@ class DoubleValueRange(min: Double, max: Double) : AbstractValueRange<Double>(mi
 
     init {
         if (this.min > this.max) {
-            this.max = this.max.add(this.min)
-            this.min = this.max.subtract(this.min)
-            this.max = this.max.subtract(this.min)
+            this.max ^= this.min
+            this.min ^= this.max
+            this.max ^= this.min
         }
     }
 
