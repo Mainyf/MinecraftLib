@@ -19,6 +19,10 @@ abstract class AbstractValueRange<T : Number>(var min: T, var max: T) : Cloneabl
     override fun hashCode(): Int {
         return super.hashCode() * min.hashCode() + max.hashCode()
     }
+
+    fun hasSingle(): Boolean {
+        return this.min == this.max
+    }
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -26,9 +30,9 @@ class IntValueRange(min: Int, max: Int) : AbstractValueRange<Int>(min, max) {
 
     init {
         if (this.min > this.max) {
-            this.max ^= this.min
-            this.min ^= this.max
-            this.max ^= this.min
+            this.max += min
+            this.min = this.max - this.min
+            this.max = this.max - this.min
         }
     }
 
@@ -47,6 +51,13 @@ class IntValueRange(min: Int, max: Int) : AbstractValueRange<Int>(min, max) {
         this.max += range.max
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        return true
+    }
+
+
 }
 
 class DoubleValueRange(min: Double, max: Double) : AbstractValueRange<Double>(min, max) {
@@ -59,9 +70,9 @@ class DoubleValueRange(min: Double, max: Double) : AbstractValueRange<Double>(mi
 
     init {
         if (this.min > this.max) {
-            this.max ^= this.min
-            this.min ^= this.max
-            this.max ^= this.min
+            this.max = this.max.add(this.min)
+            this.min = this.max.subtract(this.min)
+            this.max = this.max.subtract(this.min)
         }
     }
 
@@ -74,6 +85,13 @@ class DoubleValueRange(min: Double, max: Double) : AbstractValueRange<Double>(mi
         this.min += range.min
         this.max += range.max
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        return true
+    }
+
 
 }
 

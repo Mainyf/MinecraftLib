@@ -22,7 +22,7 @@ object LoreUtils {
         var result: T = defaultValue
         var hasValid = false
         item.getLore().forEach {
-            if (it.contains(mark)) {
+            if (it.matches(Regex(mark))) {
                 hasValid = true
                 val v = fn.invoke(result, it)
                 if(v != null) {
@@ -50,7 +50,8 @@ object LoreUtils {
 
     fun getItemPercent(item: ItemStack?, mark: String, hasNegative: Boolean = true): Double? {
         return getItemMark(item, mark, 0.0, { v: Double, loreItem: String ->
-            return@getItemMark v + (loreItem.extractText(if (hasNegative) negativePercentDoublePattern else positivePercentDoublePattern) ?: return@getItemMark null).toDouble()
+            val text = loreItem.extractText(if (hasNegative) negativePercentDoublePattern else positivePercentDoublePattern) ?: return@getItemMark null
+            return@getItemMark v + (text.substring(0, text.length - 1)).toDouble()
         })
     }
 

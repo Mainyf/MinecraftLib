@@ -19,4 +19,10 @@ public class LivingEntityUtils {
         ((LivingEntity)entity).setHealth(health);
     }
 
+    public static double getMaxHealth(Entity entity) {
+        if(!(entity instanceof LivingEntity)) {
+            throw new RuntimeException("entity not living entity");
+        }
+        return ((LivingEntity)entity).getMaxHealth();
+    }
 }

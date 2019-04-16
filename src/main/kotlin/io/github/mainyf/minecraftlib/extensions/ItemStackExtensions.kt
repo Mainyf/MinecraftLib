@@ -6,6 +6,14 @@ import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 
+fun ItemStack.getDisplayName(): String {
+    val result: String = type.name.replace("_", " ").toLowerCase()
+    if(itemMeta == null) {
+        return result
+    }
+    return if(itemMeta.hasDisplayName()) itemMeta.displayName else result
+}
+
 fun ItemStack.setDisplayName(displayName: String): ItemStack? {
     return this.also {
         it.itemMeta = it.itemMeta.also { item ->
