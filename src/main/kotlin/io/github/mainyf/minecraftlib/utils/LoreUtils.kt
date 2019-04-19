@@ -33,10 +33,19 @@ object LoreUtils {
         return if (hasValid) result else null
     }
 
-    fun getItemRangeValue(item: ItemStack?, mark: String, hasNegative: Boolean = true): DoubleValueRange? {
+    fun getItemRangeValueDouble(item: ItemStack?, mark: String, hasNegative: Boolean = true): DoubleValueRange? {
         return getItemMark(item, mark, DoubleValueRange.empty(), { v: DoubleValueRange, loreItem: String ->
             v.mergeRange(
                 convertRangeDouble(loreItem, hasNegative)
+            )
+            return@getItemMark v
+        })
+    }
+
+    fun getItemRangeValueInt(item: ItemStack?, mark: String, hasNegative: Boolean = true): IntValueRange? {
+        return getItemMark(item, mark, IntValueRange.empty(), { v: IntValueRange, loreItem: String ->
+            v.mergeRange(
+                convertRangeInt(loreItem, hasNegative)
             )
             return@getItemMark v
         })

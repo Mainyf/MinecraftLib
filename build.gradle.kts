@@ -50,6 +50,10 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = project.ext["javaVersion"]!! as String
 }
 
+tasks.withType<JavaCompile> {
+    options.compilerArgs.addAll(listOf("-Xlint:unchecked", "-Xlint:deprecation"))
+}
+
 val allJar by tasks.registering(Jar::class) {
     archiveClassifier.set("all")
     dependsOn("classes")

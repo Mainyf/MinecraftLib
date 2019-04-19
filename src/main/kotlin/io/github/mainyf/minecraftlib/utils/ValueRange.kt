@@ -6,9 +6,9 @@ import io.github.mainyf.minecraftlib.utils.RandomUtils
 import java.math.BigDecimal
 import java.util.regex.Pattern
 
-abstract class AbstractValueRange<T : Number>(var min: T, var max: T) : Cloneable {
+abstract class AbstractValueRange<T : Number>(var min: T, var max: T) {
 
-    abstract fun getRandomValue(): T
+    abstract fun randomValue(): T
 
     abstract fun mergeRange(range: AbstractValueRange<T>)
 
@@ -38,11 +38,11 @@ class IntValueRange(min: Int, max: Int) : AbstractValueRange<Int>(min, max) {
 
     companion object {
         fun empty(): IntValueRange {
-            return IntValueRange(0, 0).clone() as IntValueRange
+            return IntValueRange(0, 0)
         }
     }
 
-    override fun getRandomValue(): Int {
+    override fun randomValue(): Int {
         return RandomUtils.randomInt(min, max)
     }
 
@@ -64,7 +64,7 @@ class DoubleValueRange(min: Double, max: Double) : AbstractValueRange<Double>(mi
 
     companion object {
         fun empty(): DoubleValueRange {
-            return DoubleValueRange(0.0, 0.0).clone() as DoubleValueRange
+            return DoubleValueRange(0.0, 0.0)
         }
     }
 
@@ -76,7 +76,7 @@ class DoubleValueRange(min: Double, max: Double) : AbstractValueRange<Double>(mi
         }
     }
 
-    override fun getRandomValue(): Double {
+    override fun randomValue(): Double {
         val result = BigDecimal(RandomUtils.randomDouble(min, max))
         return result.setScale(2, BigDecimal.ROUND_HALF_UP).toDouble()
     }
