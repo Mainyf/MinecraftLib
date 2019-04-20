@@ -1,3 +1,4 @@
 build
 .idea
 server
+.gradle
