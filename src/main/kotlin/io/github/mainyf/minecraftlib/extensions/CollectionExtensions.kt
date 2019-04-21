@@ -151,7 +151,15 @@ fun <K, V, NK, NV> Map<K, V>.mapReplace(fn: (value: Map.Entry<K, V>) -> Pair<NK,
     return result
 }
 
-fun <T, R> Collection<T>.reduce(fn: (prev: R?, curr: T, index: Int) -> R, initialValue: R? = null): R? {
+fun <T, R> Collection<T>.reduce(fn: (prev: R?, curr: T, index: Int) -> R): R? {
+    var result: R? = null
+    for ((index, v) in this.withIndex()) {
+        result = fn.invoke(result, v, index)
+    }
+    return result
+}
+
+fun <T, R> Collection<T>.reduce(fn: (prev: R?, curr: T, index: Int) -> R, initialValue: R): R {
     var result = initialValue
     for ((index, v) in this.withIndex()) {
         result = fn.invoke(result, v, index)
@@ -159,7 +167,31 @@ fun <T, R> Collection<T>.reduce(fn: (prev: R?, curr: T, index: Int) -> R, initia
     return result
 }
 
-fun <T, R> Array<T>.reduce(fn: (prev: R?, curr: T, index: Int) -> R, initialValue: R? = null): R? {
+fun <K, V, R> Map<K, V>.reduce(fn: (prev: R?, curr: Map.Entry<K, V>) -> R): R? {
+    var result: R? = null
+    forEach {
+        result = fn.invoke(result, it)
+    }
+    return result
+}
+
+fun <K, V, R> Map<K, V>.reduce(fn: (prev: R, curr: Map.Entry<K, V>) -> R, initialValue: R): R {
+    var result = initialValue
+    forEach {
+        result = fn.invoke(result, it)
+    }
+    return result
+}
+
+fun <T, R> Array<T>.reduce(fn: (prev: R?, curr: T, index: Int) -> R): R? {
+    var result: R? = null
+    for ((index, v) in this.withIndex()) {
+        result = fn.invoke(result, v, index)
+    }
+    return result
+}
+
+fun <T, R> Array<T>.reduce(fn: (prev: R?, curr: T, index: Int) -> R, initialValue: R): R {
     var result = initialValue
     for ((index, v) in this.withIndex()) {
         result = fn.invoke(result, v, index)

@@ -17,11 +17,19 @@ fun CommandSender.sendColorMessage(messages: Array<String>, variable: Map<String
     messages.forEach { sendColorMessage(it, variable) }
 }
 
+fun CommandSender.sendColorMessage(messages: Collection<String>, variable: Map<String, Any> = mapOf()) {
+    messages.forEach { sendColorMessage(it, variable) }
+}
+
 fun CommandSender.sendErrorMessage(message: String, variable: Map<String, Any> = mapOf()) {
     sendColorMessage("${ChatColor.RED}$message", variable)
 }
 
 fun CommandSender.sendErrorMessage(messages: Array<String>, variable: Map<String, Any> = mapOf()) {
+    messages.forEach { sendErrorMessage(it, variable) }
+}
+
+fun CommandSender.sendErrorMessage(messages: Collection<String>, variable: Map<String, Any> = mapOf()) {
     messages.forEach { sendErrorMessage(it, variable) }
 }
 
@@ -31,4 +39,8 @@ fun CommandSender.sendWarnMessage(message: String, variable: Map<String, Any> = 
 
 fun CommandSender.sendWarnMessage(messages: Array<String>, variable: Map<String, Any> = mapOf()) {
     messages.forEach { sendErrorMessage(it, variable) }
+}
+
+fun CommandSender.sendWarnMessage(message: Collection<String>, variable: Map<String, Any> = mapOf()) {
+    sendColorMessage("${ChatColor.YELLOW}$message", variable)
 }
