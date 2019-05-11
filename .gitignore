@@ -1,4 +1,4 @@
 build
 .idea
-server
 .gradle
+*.iml
