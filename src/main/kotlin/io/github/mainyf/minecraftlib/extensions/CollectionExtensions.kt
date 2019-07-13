@@ -82,6 +82,14 @@ fun <T> MutableList<T>.getMaxNumber(predicate: (T) -> Number): Long {
     return i
 }
 
+fun <T> Array<T>.containsWith(predicate: (T) -> Boolean): Boolean {
+    for (item in this) {
+        if (predicate(item))
+            return true
+    }
+    return false
+}
+
 fun <T> Collection<T>.containsWith(predicate: (T) -> Boolean): Boolean {
     for (item in this) {
         if (predicate(item))
@@ -142,8 +150,8 @@ fun <K, V> Map<K, V>.mergeMap(vararg maps: Map<K, V>): Map<K, V> {
     return result
 }
 
-fun <K, V> Map<K, V>.mapReplace(fn: (value: Map.Entry<K, V>) -> Pair<K, V>): Map<K, V> {
-    val result = mutableMapOf<K, V>()
+fun <K, V, NK, NV> Map<K, V>.mapReplace(fn: (value: Map.Entry<K, V>) -> Pair<NK, NV>): Map<NK, NV> {
+    val result = mutableMapOf<NK, NV>()
     forEach {
         val newPair = fn.invoke(it)
         result[newPair.first] = newPair.second
@@ -153,7 +161,7 @@ fun <K, V> Map<K, V>.mapReplace(fn: (value: Map.Entry<K, V>) -> Pair<K, V>): Map
 
 fun <T, R> Collection<T>.reduce(fn: (prev: R?, curr: T, index: Int) -> R, initialValue: R? = null): R? {
     var result = initialValue
-    for((index, v) in this.withIndex()) {
+    for ((index, v) in this.withIndex()) {
         result = fn.invoke(result, v, index)
     }
     return result
@@ -161,7 +169,7 @@ fun <T, R> Collection<T>.reduce(fn: (prev: R?, curr: T, index: Int) -> R, initia
 
 fun <T, R> Array<T>.reduce(fn: (prev: R?, curr: T, index: Int) -> R, initialValue: R? = null): R? {
     var result = initialValue
-    for((index, v) in this.withIndex()) {
+    for ((index, v) in this.withIndex()) {
         result = fn.invoke(result, v, index)
     }
     return result
