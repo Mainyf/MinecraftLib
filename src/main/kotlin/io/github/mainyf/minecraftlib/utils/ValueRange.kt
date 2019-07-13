@@ -1,8 +1,15 @@
 package io.github.mainyf.minecraftlib.utils
 
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.DeserializationContext
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer
+import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import io.github.mainyf.minecraftlib.extensions.add
 import io.github.mainyf.minecraftlib.extensions.subtract
-import io.github.mainyf.minecraftlib.utils.RandomUtils
 import java.math.BigDecimal
 import java.util.regex.Pattern
 
@@ -25,7 +32,52 @@ abstract class AbstractValueRange<T : Number>(var min: T, var max: T) {
     }
 }
 
+class IntValueRangeSerializer : StdSerializer<IntValueRange>(IntValueRange::class.java) {
+
+    override fun serialize(value: IntValueRange?, gen: JsonGenerator?, provider: SerializerProvider?) {
+        value?.let {
+            if(it.min == it.max) {
+                gen?.writeNumber(it.min)
+            } else {
+                gen?.writeString("${it.min} - ${it.max}")
+            }
+        }
+    }
+
+}
+
+class IntValueRangeDeSerializer : StdDeserializer<IntValueRange>(IntValueRange::class.java) {
+
+    override fun deserialize(parser: JsonParser?, ctxt: DeserializationContext?): IntValueRange {
+        return if(parser == null) IntValueRange.empty() else convertRangeInt(parser.text)
+    }
+
+}
+
+class DoubleValueRangeSerializer : StdSerializer<DoubleValueRange>(DoubleValueRange::class.java) {
+
+    override fun serialize(value: DoubleValueRange?, gen: JsonGenerator?, provider: SerializerProvider?) {
+        value?.let {
+            if(it.min == it.max) {
+                gen?.writeNumber(it.min)
+            } else {
+                gen?.writeString("${it.min} - ${it.max}")
+            }
+        }
+    }
+}
+
+class DoubleValueRangeDeSerializer : StdDeserializer<DoubleValueRange>(DoubleValueRange::class.java) {
+
+    override fun deserialize(parser: JsonParser?, ctxt: DeserializationContext?): DoubleValueRange {
+        return if(parser == null) DoubleValueRange.empty() else convertRangeDouble(parser.text)
+    }
+
+}
+
 @Suppress("UNCHECKED_CAST")
+@JsonSerialize(using = IntValueRangeSerializer::class)
+@JsonDeserialize(using = IntValueRangeDeSerializer::class)
 class IntValueRange(min: Int, max: Int) : AbstractValueRange<Int>(min, max) {
 
     init {
@@ -60,6 +112,8 @@ class IntValueRange(min: Int, max: Int) : AbstractValueRange<Int>(min, max) {
 
 }
 
+@JsonSerialize(using = DoubleValueRangeSerializer::class)
+@JsonDeserialize(using = DoubleValueRangeDeSerializer::class)
 class DoubleValueRange(min: Double, max: Double) : AbstractValueRange<Double>(min, max) {
 
     companion object {
@@ -112,4 +166,8 @@ fun convertRangeInt(str: String, hasNegative: Boolean = true): IntValueRange {
 fun convertRangeDouble(str: String, hasNegative: Boolean = true): DoubleValueRange {
     val (min, max) = convertToArray(str, hasNegative) ?: Pair("0.0", "0.0")
     return DoubleValueRange(min.toDouble(), max?.toDouble() ?: min.toDouble())
+}
+
+fun hasRangeValue(str: String): Boolean {
+    return str.matches(Regex("-?(\\d)+([.]?\\d+)?[ ]+[-][ ]+-?(\\d)+([.]?\\d+)?"))
 }

@@ -1,7 +1,4 @@
-asdads:
-  name: Mainyf
-  text: SSSSS
-  spliteChar: ':'
-  defaultValue:
-    min: 1.0
-    max: 1.0
+name: Mainyf
+text: SSSSS
+splitChar: ':'
+defaultValue: 1.0

@@ -3,6 +3,7 @@ package test
 import io.github.mainyf.minecraftlib.data.YamlHelper
 import io.github.mainyf.minecraftlib.utils.DoubleValueRange
 import org.junit.Test
+import java.nio.file.Files
 import java.nio.file.Paths
 
 class MainTest {
@@ -26,22 +27,25 @@ class MainTest {
         val settings = MarkSettings()
         settings.name = "Mainyf"
         settings.text = "SSSSS"
-        settings.spliteChar = ":"
+        settings.splitChar = ":"
         settings.defaultValue = DoubleValueRange(1.0, 1.0)
-        YamlHelper.saveFile(Paths.get("demo.yml"), mapOf(
-            "asdads" to settings
-        ))
+        val file = Paths.get("demo.yml")
+        if(Files.notExists(file)) {
+            YamlHelper.saveFile(Paths.get("demo.yml"), settings)
+        }
+        println(YamlHelper.readFile<MarkSettings>(file))
     }
 
     class MarkSettings {
 
         lateinit var name: String
         lateinit var text: String
-        lateinit var spliteChar: String
+        lateinit var splitChar: String
+
         var defaultValue: Any? = null
 
         override fun toString(): String {
-            return "MarkSettings(name='$name', text='$text', spliteChar='$spliteChar', defaultValue=$defaultValue)"
+            return "MarkSettings(name='$name', text='$text', spliteChar='$splitChar', defaultValue=$defaultValue)"
         }
 
 
